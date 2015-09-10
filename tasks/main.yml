@@ -1,0 +1,4 @@
+---
+- include: zabbix-agent.yml
+  when: zabbix_agent_enabled
+  tags: [zabbix-agent]

@@ -1,0 +1,15 @@
+---
+- name: Install Zabbix Agent package
+  apt: pkg=zabbix-agent state=latest
+
+- name: Set up Zabbix server in config file
+  lineinfile: dest=/etc/zabbix/zabbix_agentd.conf regexp=^Server= line=Server={{ zabbix_agent_server }}
+  when: zabbix_agent_server
+
+- name: Set up Zabbix Agent hostname in config file
+  lineinfile: dest=/etc/zabbix/zabbix_agentd.conf regexp=^Hostname= line=Hostname={{ zabbix_agent_hostname }}
+  notify: restart zabbix-agent
+  when: zabbix_agent_hostname
+
+- name: Ensure Zabbix Agent is running and enabled
+  service: name=zabbix-agent enabled=yes state=started
