@@ -10,11 +10,11 @@ install:
   - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
 
 script:
-  - ansible-playbook -i tests/inventory tests/test.yml --syntax-check
-  - ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo
+  - ansible-playbook -i tests/inventory tests/test.yml --extra-vars="zabbix_agent_server='localhost' zabbix_agent_hostname='localhost'" --syntax-check
+  - ansible-playbook -i tests/inventory tests/test.yml --extra-vars="zabbix_agent_server='localhost' zabbix_agent_hostname='localhost'" --connection=local --sudo
 
   - >
-    ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo
+    ansible-playbook -i tests/inventory tests/test.yml --extra-vars="zabbix_agent_server='localhost' zabbix_agent_hostname='localhost'" --connection=local --sudo
     | grep -q '.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
